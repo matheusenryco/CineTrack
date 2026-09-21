@@ -6,36 +6,86 @@
     <title>CineTrack</title>
 </head>
 <body>
-    <!-- Introdução -->
-    <h1>CineTrack</h1>
-    <p><strong>CineTrack</strong> o seu gerenciador pessoal de filmes</p>
-    <p><a href="adicionar.html">+ Adicionar filme</a></p>
+    <header>
+        <h1>CineTrack</h1>
+        <input type="search" aria-label="Buscar filme" placeholder="Buscar filme">
+        <button type="button">+ Adicionar</button>
+    </header>
 
-    <!-- Status possíveis -->
-    <h2>Status possíveis</h2>
-    <ul id="lista-status">
-        <li class="item-status">Assistido</li>
-        <li class="item-status">Assistindo</li>
-        <li class="item-status">Quero assistir</li>
-    </ul>
+    <nav aria-label="Filtros de status">
+        <button type="button" class="ativo">Todos</button>
+        <button type="button">Assistido</button>
+        <button type="button">Assistindo</button>
+        <button type="button">Quero assistir</button>
+    </nav>
 
-    <!-- Meus filmes favoritos -->
-    <h2>Meus filmes favoritos</h2>
-    <ol id="lista-favoritos">
-        <li class="item-favorito">Matrix</li>
-        <li class="item-favorito">Interestelar</li>
-        <li class="item-favorito">Diário de uma Paixão</li>
-    </ol>
+    <main>
+        <section id="lista" aria-live="polite">
+            <article class="card">
+                <img src="img/a-origem.jpg" alt="Poster de A Origem" width="160" height="240">
+                <h2>A Origem</h2>
+                <p>2010 · Ficção científica</p>
+                <p>Nota: ★★★★★</p>
+                <span>assistido</span>
+                <button type="button">Editar</button>
+                <button type="button">Remover</button>
+            </article>
 
-    <!-- Sobre Matrix -->
-    <h2>Sobre Matrix</h2>
-    <dl>
-        <dt>Diretor</dt> <dd>Lana Wachowski, Lilly Wachowski</dd>
-        <dt>Ano</dt> <dd>1999</dd>
-        <dt>Gênero</dt> <dd>Ação, Aventura, Ficção Científica</dd>
-    </dl>
+            <article class="card">
+                <img src="img/parasite.jpg" alt="Poster de Parasita" width="160" height="240">
+                <h2>Parasita</h2>
+                <p>2019 · Suspense</p>
+                <p>Nota: ★★★★☆</p>
+                <span>assistido</span>
+                <button type="button">Editar</button>
+                <button type="button">Remover</button>
+            </article>
 
-    <!-- Rodapé -->
-    <p>&copy; 2025 CineTrack</p>
+            <article class="card">
+                <img src="img/a-dogs-will.jpg" alt="Poster de O Auto da Compadecida" width="160" height="240">
+                <h2>O Auto da Compadecida</h2>
+                <p>2000 · Comédia</p>
+                <p>Nota: ★★★★★</p>
+                <span>assistido</span>
+                <button type="button">Editar</button>
+                <button type="button">Remover</button>
+            </article>
+
+            <article class="card">
+                <img src="img/dune-part-two.jpg" alt="Poster de Duna: Parte Dois" width="160" height="240">
+                <h2>Duna: Parte Dois</h2>
+                <p>2024 · Ficção científica</p>
+                <p>Nota: ★★★★☆</p>
+                <span>assistindo</span>
+                <button type="button">Editar</button>
+                <button type="button">Remover</button>
+            </article>
+
+            <article class="card">
+                <img src="img/interstelar.jpg" alt="Poster de Interestelar" width="160" height="240">
+                <h2>Interestelar</h2>
+                <p>2014 · Ficção científica</p>
+                <p>Nota: ★★★★★</p>
+                <span>quero assistir</span>
+                <button type="button">Editar</button>
+                <button type="button">Remover</button>
+            </article>
+
+            <article class="card">
+                <img src="img/city-of-god.jpg" alt="Poster de Cidade de Deus" width="160" height="240">
+                <h2>Cidade de Deus</h2>
+                <p>2002 · Drama</p>
+                <p>Nota: ★★★★☆</p>
+                <span>quero assistir</span>
+                <button type="button">Editar</button>
+                <button type="button">Remover</button>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <p><small>CineTrack - UEM</small></p>
+        <p><a href="adicionar.html">Adicionar filme</a></p>
+    </footer>
 </body>
 </html>

@@ -35,9 +35,22 @@ button {
 
 /* Header */
 header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
   background: #000000;
   color: #FFFFFF;
   padding: 16px 24px;
+}
+
+header h1 {
+  flex: 0 0 auto;
+}
+
+header input {
+  flex: 1 1 240px;
 }
 
 header a {
@@ -53,14 +66,51 @@ header button {
   border-radius: 4px;
 }
 
+/* Filtros */
+nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 12px 24px;
+}
+
+nav button {
+  padding: 6px 14px;
+  border: 1px solid #000000;
+  background: #FFFFFF;
+  border-radius: 999px;
+}
+
+nav button.ativo {
+  background: #000000;
+  color: #FFFFFF;
+}
+
+/* Galeria */
+#lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 16px 24px;
+}
+
 /* Cards */
 .card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 200px;
   background: #FFFFFF;
   padding: 16px;
   border: 1px solid #D4D6D8;
   border-radius: 4px;
   box-shadow: 0 1px 4px #0002;
-  margin: 16px 24px;
+}
+
+.card .acoes {
+  margin-top: auto;
+  display: flex;
+  gap: 8px;
 }
 
 a {

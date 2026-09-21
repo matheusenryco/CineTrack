@@ -25,6 +25,7 @@ body {
 
 img {
   max-width: 100%;
+  height: auto;
   display: block;
 }
 
@@ -47,6 +48,7 @@ header {
 
 header h1 {
   flex: 0 0 auto;
+  font-size: clamp(1.2rem, 1rem + 2vw, 2rem);
 }
 
 header input {
@@ -64,6 +66,11 @@ header button {
   font-weight: 700;
   padding: 8px 18px;
   border-radius: 4px;
+}
+
+/* Mobile: só "+"; desktop: "+ Adicionar" */
+.btn-longo {
+  display: none;
 }
 
 /* Filtros */
@@ -86,10 +93,10 @@ nav button.ativo {
   color: #FFFFFF;
 }
 
-/* Galeria */
+/* Galeria — grid responsivo (auto-fill + minmax) */
 #lista {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 16px;
   padding: 16px 24px;
 }
@@ -99,12 +106,21 @@ nav button.ativo {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  width: 200px;
   background: #FFFFFF;
   padding: 16px;
   border: 1px solid #D4D6D8;
   border-radius: 4px;
   box-shadow: 0 1px 4px #0002;
+}
+
+/* Pôster: caixa 2/3; cover recorta sem distorcer */
+.card img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 6px;
 }
 
 .card .acoes {
@@ -115,4 +131,24 @@ nav button.ativo {
 
 a {
   color: #1F5BD6;
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  header h1 {
+    font-size: clamp(1.75rem, 1rem + 2.5vw, 2.5rem);
+  }
+
+  .btn-curto {
+    display: none;
+  }
+
+  .btn-longo {
+    display: inline;
+  }
+
+  #lista {
+    gap: 24px;
+    padding: 24px;
+  }
 }

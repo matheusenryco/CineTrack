@@ -1,0 +1,68 @@
+/*
+  Paleta CineTrack
+  - Primária: #000000  (header)
+  - Acento:   #1F5BD6  (links, foco)
+  - Neutro:   #EEF0F2  (fundo; texto #000000)
+*/
+
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  color: #000000;
+  background: #EEF0F2;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Header */
+header {
+  background: #000000;
+  color: #FFFFFF;
+  padding: 16px 24px;
+}
+
+header a {
+  color: #FFFFFF;
+}
+
+header button {
+  background: transparent;
+  color: #FFFFFF;
+  border: 2px solid #FFFFFF;
+  font-weight: 700;
+  padding: 8px 18px;
+  border-radius: 4px;
+}
+
+/* Cards */
+.card {
+  background: #FFFFFF;
+  padding: 16px;
+  border: 1px solid #D4D6D8;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px #0002;
+  margin: 16px 24px;
+}
+
+a {
+  color: #1F5BD6;
+}

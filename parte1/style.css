@@ -404,3 +404,30 @@ body > h1 {
     padding: 24px;
   }
 }
+
+/* Impressão: catálogo limpo, sem busca, filtros, botões ou footer */
+@media print {
+  :root {
+    --cor-fundo: #FFFFFF;
+    --cor-texto: #000000;
+    --cor-primaria: #FFFFFF;
+    --cor-superficie: #FFFFFF;
+    --sombra: none;
+  }
+
+  header {
+    color: var(--cor-texto);
+  }
+
+  header input,
+  header button,
+  nav,
+  .card .acoes,
+  footer {
+    display: none;
+  }
+
+  .card {
+    break-inside: avoid;
+  }
+}

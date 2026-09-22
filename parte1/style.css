@@ -244,19 +244,28 @@ footer {
   text-align: center;
 }
 
-/* Formulário (adicionar.html e modal) */
+/* Formulário (adicionar.html e modal) — card centralizado */
 #form-filme {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  max-width: 420px;
+  gap: var(--espaco);
+  max-width: 480px;
   margin: var(--espaco) auto;
-  padding: 0 24px 24px;
+  padding: var(--espaco);
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+}
+
+#form-filme .campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 #form-filme label {
-  font-weight: 600;
-  margin-top: 8px;
+  font-weight: 700;
 }
 
 #form-filme input,
@@ -266,7 +275,7 @@ footer {
   padding: 8px 12px;
   border: 1px solid var(--cor-borda);
   border-radius: var(--raio);
-  background: var(--cor-superficie);
+  background: var(--cor-fundo);
   color: var(--cor-texto);
   font: inherit;
 }
@@ -276,8 +285,13 @@ footer {
   resize: vertical;
 }
 
+#form-filme .acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
 #form-filme button {
-  margin-top: 8px;
   padding: 8px 16px;
   border: 1px solid var(--cor-borda);
   border-radius: var(--raio);
@@ -341,6 +355,9 @@ body > h1 {
   margin: 0;
   padding: 0;
   max-width: none;
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 @keyframes aparecer {

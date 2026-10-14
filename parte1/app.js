@@ -15,12 +15,12 @@ const estrelas = (nota) => {
 };
 
 const filmesIniciais = [
-    { id: 1, titulo: "A Origem", ano: 2010, genero: "Ficção científica", poster: "img/a-origem.jpg", nota: 5, status: "assistido", comentario: "Um sonho dentro de outro sonho." },
-    { id: 2, titulo: "Parasita", ano: 2019, genero: "Suspense", poster: "img/parasite.jpg", nota: 4, status: "assistido", comentario: "Crítica social afiada e cheia de reviravoltas." },
-    { id: 3, titulo: "O Auto da Compadecida", ano: 2000, genero: "Comédia", poster: "img/a-dogs-will.jpg", nota: 5, status: "assistido", comentario: "Clássico do humor brasileiro." },
-    { id: 4, titulo: "Duna: Parte Dois", ano: 2024, genero: "Ficção científica", poster: "img/dune-part-two.jpg", nota: 4, status: "assistindo", comentario: "Visual impressionante, vendo aos poucos." },
-    { id: 5, titulo: "Interestelar", ano: 2014, genero: "Ficção científica", poster: "img/interstelar.jpg", nota: 5, status: "quero", comentario: "Dizem que a trilha sonora é incrível." },
-    { id: 6, titulo: "Cidade de Deus", ano: 2002, genero: "Drama", poster: "img/city-of-god.jpg", nota: 4, status: "quero", comentario: "Está na lista há muito tempo." }
+    { id: 1, titulo: "A Origem", ano: 2010, genero: "Ficção científica", poster: "img/a-origem.jpg", nota: 5, status: "assistido", comentario: "Revejo sempre." },
+    { id: 2, titulo: "Parasita", ano: 2019, genero: "Suspense", poster: "img/parasite.jpg", nota: 4, status: "assistido", comentario: "" },
+    { id: 3, titulo: "O Auto da Compadecida", ano: 2000, genero: "Comédia", poster: "img/a-dogs-will.jpg", nota: 5, status: "assistido", comentario: "Classico nacional." },
+    { id: 4, titulo: "Duna: Parte Dois", ano: 2024, genero: "Ficção científica", poster: "img/dune-part-two.jpg", nota: 4, status: "assistindo", comentario: "" },
+    { id: 5, titulo: "Interestelar", ano: 2014, genero: "Ficção científica", poster: "img/interstelar.jpg", nota: 5, status: "quero", comentario: "" },
+    { id: 6, titulo: "Cidade de Deus", ano: 2002, genero: "Drama", poster: "img/city-of-god.jpg", nota: 4, status: "quero", comentario: "" }
 ];
 
 function validarFilme(filme) {
@@ -147,7 +147,7 @@ function atualizar() {
 
 // Opcional: busca o pôster real na TMDB para filmes cadastrados sem pôster.
 // Token de leitura (v4) da TMDB em TMDB_KEY; vazio, nada é buscado.
-const TMDB_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MWZhZDAyZjg5ZmNhZDQzZTE2ZDRmMmIxNzVkMWI3ZCIsIm5iZiI6MTc5MTk4OTA1Mi4yNzksInN1YiI6IjZhY2Y5NTNjNjEzZWFmZjIwNTA3MmZlYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.1YriLA2aa8gcFLLrgqyOmNdySnIc52iWZ5eb7u4px7Y";
+const TMDB_KEY = "";
 
 async function buscarPoster(filme) {
     const params = new URLSearchParams({

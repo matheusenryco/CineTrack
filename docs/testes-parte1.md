@@ -17,7 +17,7 @@ Teste de mesa do `parte1/` antes da avaliação, seguindo o roteiro da ANP 05.
 | # | Caso | Resultado esperado | Resultado obtido | Passou? | Correção feita |
 |---|------|--------------------|------------------|---------|----------------|
 | 1 | Adicionar um filme válido (Matrix, 1999, nota 5) | O card aparece sem recarregar a página | 7 cards, "Matrix" na lista, marcador JS da página preservado (sem reload), modal fechado, 7 filmes no `localStorage` | Passou | - |
-| 2 | Enviar ano fora da faixa (1800) | O erro aparece na interface e nada é salvo | 6 cards, nada gravado no `localStorage`, modal continua aberto. O navegador mostra "Value must be greater than or equal to 1888" no campo Ano, por causa de `min="1888"`. Nenhum `alert` do JS, porque a validação nativa impede o `submit` antes | Passou | - (ver observação 2a) |
+| 2 | Enviar ano fora da faixa (1800) | O erro aparece na interface e nada é salvo | 6 cards, nada gravado no `localStorage`, modal continua aberto. O navegador mostra "Value must be greater than or equal to 1888" no campo Ano, por causa de `min="1888"`. Nenhuma mensagem do JS, porque a validação nativa impede o `submit` antes | Passou | - (ver observação 2a) |
 | 3 | Editar um filme (Parasita: novo título e nota 3) | O card certo muda, sem duplicar | **1ª rodada:** nada mudou. Ao clicar em Salvar o formulário não enviava, e o campo de pôster acusava "Please enter a URL" (o pôster `img/parasite.jpg` é um caminho relativo e o campo era `type="url"`). **Após a correção:** 6 cards, título "Parasita (Editado)", nota ★★★☆☆, os demais intactos, sem duplicata | **Falhou**, depois passou | `fix: permitir editar filme com poster local` (campo de pôster passou a `type="text"`) |
 | 4 | Remover e cancelar a confirmação | O filme continua | `confirm("Remover este filme?")` exibido; ao cancelar, 6 cards e "A Origem" presente. Ao confirmar em seguida, 5 cards | Passou | - |
 | 5 | Busca + filtro de status juntos | Os dois critérios combinam | "Quero assistir" + `cid` → só "Cidade de Deus". "Quero assistir" + `inter` → só "Interestelar". Trocar para "Assistido" mantendo `inter` → lista vazia. "Todos" + `cid` → "O Auto da Compadecida" e "Cidade de Deus" | Passou | - |
@@ -28,14 +28,14 @@ Teste de mesa do `parte1/` antes da avaliação, seguindo o roteiro da ANP 05.
 ### Observações
 
 **2a. Validação nativa x `validarFilme`.** Para o ano fora da faixa, quem barra é o próprio navegador
-(`min`/`max`), então a função `validarFilme` e o `alert` não chegam a rodar. Para exercitar o caminho do JS,
+(`min`/`max`), então a função `validarFilme` e a mensagem de erro na interface não chegam a rodar. Para exercitar o caminho do JS,
 foi feito o caso extra abaixo.
 
 ### Caso extra: título só com espaços
 
 | Caso | Resultado esperado | Resultado obtido | Passou? | Correção feita |
 |------|--------------------|------------------|---------|----------------|
-| Enviar título `"   "` (ano e demais campos válidos) | O erro aparece e nada é salvo | **1ª rodada:** o filme foi salvo com título em branco (7 cards, card sem nome). O `required` aceita espaços e `validarFilme` só testava `!filme.titulo`. **Após a correção:** `alert("Título obrigatório")`, 6 cards, nada gravado | **Falhou**, depois passou | `fix: rejeitar titulo so com espacos` (`dados.titulo.trim()` antes de validar) |
+| Enviar título `"   "` (ano e demais campos válidos) | O erro aparece e nada é salvo | **1ª rodada:** o filme foi salvo com título em branco (7 cards, card sem nome). O `required` aceita espaços e `validarFilme` só testava `!filme.titulo`. **Após a correção:** mensagem "Título obrigatório" exibida no modal, 6 cards, nada gravado | **Falhou**, depois passou | `fix: rejeitar titulo so com espacos` (`dados.titulo.trim()` antes de validar) |
 
 ## Ordenação (`feat: ordenacao`)
 

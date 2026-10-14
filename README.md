@@ -2,6 +2,10 @@
 
 CineTrack é um gerenciador pessoal de filmes desenvolvido como projeto integrador da disciplina de Programação de Sistemas Web (UEM). Permite cadastrar, listar, buscar, filtrar e ordenar filmes por status (assistido, quero assistir, assistindo). O projeto é dividido em duas partes: a primeira constrói um frontend interativo com HTML, CSS e JavaScript; a segunda acrescenta uma API REST e persistência de dados. Serve como base prática para os conceitos de sistemas web vistos em aula, como HTTP, REST, camadas e arquitetura cliente-servidor.
 
+## Autor
+
+- Matheus Enryco Marques — RA140503
+
 ## Parte 1 (v1.0)
 
 Frontend em `parte1/`, sem dependências e sem etapa de build. Todo o JavaScript está em um único `app.js`.

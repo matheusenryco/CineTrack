@@ -6,3 +6,6 @@ export const filmesIniciais = [
     { id: 5, titulo: "Interestelar", ano: 2014, genero: "Ficção científica", poster: "img/interstelar.jpg", nota: 5, status: "quero", comentario: "Dizem que a trilha sonora é incrível." },
     { id: 6, titulo: "Cidade de Deus", ano: 2002, genero: "Drama", poster: "img/city-of-god.jpg", nota: 4, status: "quero", comentario: "Está na lista há muito tempo." }
 ];
+
+// Próximo id: o maior id existente mais 1 (o 0 cobre a lista vazia)
+export const gerarId = (itens) => Math.max(0, ...itens.map((f) => f.id)) + 1;

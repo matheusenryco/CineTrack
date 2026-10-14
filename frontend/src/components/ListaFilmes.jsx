@@ -1,6 +1,6 @@
 import CardFilme from "./CardFilme.jsx";
 
-export default function ListaFilmes({ filmes }) {
+export default function ListaFilmes({ filmes, aoEditar, aoRemover }) {
   if (filmes.length === 0) {
     return <p>Nenhum filme encontrado.</p>;
   }
@@ -8,7 +8,12 @@ export default function ListaFilmes({ filmes }) {
   return (
     <section id="lista" aria-live="polite">
       {filmes.map((filme) => (
-        <CardFilme key={filme.id} filme={filme} />
+        <CardFilme
+          key={filme.id}
+          filme={filme}
+          aoEditar={aoEditar}
+          aoRemover={aoRemover}
+        />
       ))}
     </section>
   );

@@ -1,11 +1,11 @@
 import Estrelas from "./Estrelas.jsx";
 import Badge from "./Badge.jsx";
 
-export default function CardFilme({ filme }) {
+export default function CardFilme({ filme, aoEditar, aoRemover }) {
   return (
     <article className="card">
       <img
-        src={filme.poster}
+        src={filme.poster || undefined}
         alt={`Poster de ${filme.titulo}`}
         width={300}
         height={450}
@@ -15,8 +15,20 @@ export default function CardFilme({ filme }) {
       <p>Nota: <Estrelas nota={filme.nota} /></p>
       <Badge status={filme.status} />
       <div className="acoes">
-        <button type="button" className="btn-editar">Editar</button>
-        <button type="button" className="btn-remover">Remover</button>
+        <button
+          type="button"
+          className="btn-editar"
+          onClick={() => aoEditar(filme)}
+        >
+          Editar
+        </button>
+        <button
+          type="button"
+          className="btn-remover"
+          onClick={() => aoRemover(filme.id)}
+        >
+          Remover
+        </button>
       </div>
     </article>
   );

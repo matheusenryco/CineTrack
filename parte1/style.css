@@ -431,3 +431,18 @@ body > h1 {
     break-inside: avoid;
   }
 }
+
+/* Ordenação */
+nav label {
+  align-self: center;
+  margin-left: auto;
+}
+
+nav select {
+  padding: 6px 10px;
+  border: 1px solid var(--cor-texto);
+  background: var(--cor-superficie);
+  color: var(--cor-texto);
+  border-radius: var(--raio);
+  font: inherit;
+}

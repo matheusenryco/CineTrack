@@ -96,10 +96,12 @@ function debounce(fn, ms = 300) {
 let filmes = carregar();
 let termoAtual = "";
 let statusAtual = "todos";
+let ordemAtual = "titulo";
 
 const lista = document.querySelector("#lista");
 const nav = document.querySelector("nav");
 const busca = document.querySelector("header input");
+const ordenar = document.querySelector("#ordenar");
 
 function aplicarFiltros(lista, opcoes) {
     const termo = opcoes.termo.toLowerCase();
@@ -109,10 +111,20 @@ function aplicarFiltros(lista, opcoes) {
             || f.status === opcoes.status);
 }
 
+function ordenarFilmes(itens, criterio) {
+    const porTitulo = (a, b) => a.titulo.localeCompare(b.titulo, "pt-BR");
+    const comparadores = {
+        titulo: porTitulo,
+        ano: (a, b) => b.ano - a.ano || porTitulo(a, b),
+        nota: (a, b) => b.nota - a.nota || porTitulo(a, b)
+    };
+    return [...itens].sort(comparadores[criterio]);
+}
+
 function atualizar() {
-    const visiveis = aplicarFiltros(filmes,
+    const filtrados = aplicarFiltros(filmes,
         { termo: termoAtual, status: statusAtual });
-    renderizarCards(visiveis);
+    renderizarCards(ordenarFilmes(filtrados, ordemAtual));
 }
 
 // Opcional: busca o pôster real na TMDB para filmes cadastrados sem pôster.
@@ -155,6 +167,11 @@ const aoDigitar = (e) => {
 };
 
 busca.addEventListener("input", debounce(aoDigitar, 300));
+
+ordenar.addEventListener("change", (e) => {
+    ordemAtual = e.target.value;
+    atualizar();
+});
 
 atualizar();
 preencherPosters();

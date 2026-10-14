@@ -1,12 +1,14 @@
-import Titulo from "./components/Titulo.jsx";
-
-const anoAtual = new Date().getFullYear();
+import { filmesIniciais } from "./data/filmes.js";
+import Header from "./components/Header.jsx";
+import Filtros from "./components/Filtros.jsx";
+import ListaFilmes from "./components/ListaFilmes.jsx";
 
 export default function App() {
   return (
     <>
-      <Titulo />
-      <p>Ano atual: {anoAtual}</p>
+      <Header />
+      <Filtros />
+      <ListaFilmes filmes={filmesIniciais} />
     </>
   );
 }

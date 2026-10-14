@@ -14,7 +14,6 @@ const estrelas = (nota) => {
     return resultado;
 };
 
-// Dados de exemplo
 const filmesIniciais = [
     { id: 1, titulo: "A Origem", ano: 2010, genero: "Ficção científica", poster: "img/a-origem.jpg", nota: 5, status: "assistido", comentario: "Um sonho dentro de outro sonho." },
     { id: 2, titulo: "Parasita", ano: 2019, genero: "Suspense", poster: "img/parasite.jpg", nota: 4, status: "assistido", comentario: "Crítica social afiada e cheia de reviravoltas." },
@@ -24,7 +23,6 @@ const filmesIniciais = [
     { id: 6, titulo: "Cidade de Deus", ano: 2002, genero: "Drama", poster: "img/city-of-god.jpg", nota: 4, status: "quero", comentario: "Está na lista há muito tempo." }
 ];
 
-// Validação pura: recebe um filme e devolve o resultado, sem tocar o DOM
 function validarFilme(filme) {
     const erros = [];
     if (!filme.titulo) erros.push("Título obrigatório");
@@ -69,46 +67,120 @@ function criarCard(filme) {
     return card;
 }
 
-// Monta os cards fora da árvore e os anexa de uma só vez
 function renderizarCards(itens) {
     const frag = document.createDocumentFragment();
     itens.forEach((filme) => frag.appendChild(criarCard(filme)));
     document.querySelector("#lista").replaceChildren(frag);
 }
 
+const CHAVE = "cinetrack:filmes";
+
+function salvar() {
+    localStorage.setItem(CHAVE, JSON.stringify(filmes));
+}
+
+function carregar() {
+    const txt = localStorage.getItem(CHAVE);
+    return txt ? JSON.parse(txt) : [...filmesIniciais];
+}
+
+function debounce(fn, ms = 300) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn(...args), ms);
+    };
+}
+
 // Lista de trabalho: filmesIniciais continua intacta, as ações trocam esta cópia
-let filmes = [...filmesIniciais];
+let filmes = carregar();
+let termoAtual = "";
+let statusAtual = "todos";
 
 const lista = document.querySelector("#lista");
 const nav = document.querySelector("nav");
+const busca = document.querySelector("header input");
 
-renderizarCards(filmes);
+function aplicarFiltros(lista, opcoes) {
+    const termo = opcoes.termo.toLowerCase();
+    return lista
+        .filter((f) => f.titulo.toLowerCase().includes(termo))
+        .filter((f) => opcoes.status === "todos"
+            || f.status === opcoes.status);
+}
 
-// Rodapé
+function atualizar() {
+    const visiveis = aplicarFiltros(filmes,
+        { termo: termoAtual, status: statusAtual });
+    renderizarCards(visiveis);
+}
+
+// Opcional: busca o pôster real na TMDB para filmes cadastrados sem pôster.
+// Token de leitura (v4) da TMDB em TMDB_KEY; vazio, nada é buscado.
+const TMDB_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MWZhZDAyZjg5ZmNhZDQzZTE2ZDRmMmIxNzVkMWI3ZCIsIm5iZiI6MTc5MTk4OTA1Mi4yNzksInN1YiI6IjZhY2Y5NTNjNjEzZWFmZjIwNTA3MmZlYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.1YriLA2aa8gcFLLrgqyOmNdySnIc52iWZ5eb7u4px7Y";
+
+async function buscarPoster(filme) {
+    const params = new URLSearchParams({
+        query: filme.titulo,
+        year: filme.ano,
+        language: "pt-BR"
+    });
+    const resp = await fetch(`https://api.themoviedb.org/3/search/movie?${params}`, {
+        headers: { Authorization: `Bearer ${TMDB_KEY}` }
+    });
+    if (!resp.ok) throw new Error(`TMDB respondeu ${resp.status}`);
+    const dados = await resp.json();
+    const caminho = dados.results[0]?.poster_path;
+    return caminho ? `https://image.tmdb.org/t/p/w500${caminho}` : "";
+}
+
+async function preencherPosters() {
+    if (!TMDB_KEY) return;
+    for (const filme of filmes.filter((f) => !f.poster)) {
+        try {
+            const poster = await buscarPoster(filme);
+            if (!poster) continue;
+            filmes = filmes.map((f) => f.id === filme.id ? { ...f, poster } : f);
+            salvar();
+            atualizar();
+        } catch (erro) {
+            console.error(`Pôster de "${filme.titulo}" não carregou:`, erro);
+        }
+    }
+}
+
+const aoDigitar = (e) => {
+    termoAtual = e.target.value;
+    atualizar();
+};
+
+busca.addEventListener("input", debounce(aoDigitar, 300));
+
+atualizar();
+preencherPosters();
+
 document.querySelector("footer small").textContent =
     `CineTrack © 2026 · ${filmesIniciais.length} filmes cadastrados`;
 
-// Remoção por delegação: um único listener cobre todos os botões Remover
 lista.addEventListener("click", (e) => {
     const botao = e.target.closest(".btn-remover");
-    if (!botao) return; // clicou em outra coisa
+    if (!botao) return;
     if (!confirm("Remover este filme?")) return;
     const card = botao.closest(".card");
     const id = Number(card.dataset.id);
     filmes = filmes.filter((f) => f.id !== id);
-    renderizarCards(filmes);
+    salvar();
+    atualizar();
 });
 
-// Filtro por status por delegação
 nav.addEventListener("click", (e) => {
     const botao = e.target.closest("button");
     if (!botao) return;
     nav.querySelector(".ativo")
         .classList.remove("ativo");
     botao.classList.add("ativo");
-    const status = botao.dataset.status;
-    renderizarCards(filmes.filter((f) =>
-        status === "todos" || f.status === status));
+    statusAtual = botao.dataset.status;
+    atualizar();
 });
 
 // Modal: um único formulário para adicionar (editandoId = null) e editar
@@ -130,7 +202,6 @@ document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && !modal.hidden) fechar();
 });
 
-// Editar por delegação: preenche o formulário com o filme do card clicado
 lista.addEventListener("click", (e) => {
     const botao = e.target.closest(".btn-editar");
     if (!botao) return;
@@ -144,7 +215,6 @@ lista.addEventListener("click", (e) => {
     abrir();
 });
 
-// Salvar: valida e então adiciona ou edita sem mutar o array
 form.addEventListener("submit", (e) => {
     e.preventDefault();
     const dados = Object.fromEntries(new FormData(form));
@@ -165,6 +235,8 @@ form.addEventListener("submit", (e) => {
     }
 
     editandoId = null;
-    renderizarCards(filmes);
+    salvar();
+    atualizar();
     fechar();
+    preencherPosters();
 });

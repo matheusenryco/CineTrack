@@ -220,6 +220,7 @@ form.addEventListener("submit", (e) => {
     const dados = Object.fromEntries(new FormData(form));
     dados.ano = Number(dados.ano); // vem string
     dados.nota = Number(dados.nota);
+    dados.titulo = dados.titulo.trim(); // só espaços não vale
 
     const { valido, erros } = validarFilme(dados);
     if (!valido) {

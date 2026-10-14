@@ -1,12 +1,5 @@
-function estrelas(nota) {
-  return "★".repeat(nota) + "☆".repeat(5 - nota);
-}
-
-const ROTULOS = {
-  assistido: "Assistido",
-  assistindo: "Assistindo",
-  quero: "Quero assistir",
-};
+import Estrelas from "./Estrelas.jsx";
+import Badge from "./Badge.jsx";
 
 export default function CardFilme({ filme }) {
   return (
@@ -19,8 +12,8 @@ export default function CardFilme({ filme }) {
       />
       <h2>{filme.titulo}</h2>
       <p>{filme.ano} · {filme.genero}</p>
-      <p>Nota: {estrelas(filme.nota)}</p>
-      <span className={`badge ${filme.status}`}>{ROTULOS[filme.status]}</span>
+      <p>Nota: <Estrelas nota={filme.nota} /></p>
+      <Badge status={filme.status} />
       <div className="acoes">
         <button type="button" className="btn-editar">Editar</button>
         <button type="button" className="btn-remover">Remover</button>

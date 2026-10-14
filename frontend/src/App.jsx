@@ -17,6 +17,7 @@ export default function App() {
     <>
       <Header busca={busca} aoBuscar={setBusca} />
       <Filtros ativo={status} aoMudar={setStatus} />
+      <p>Exibindo {visiveis.length} de {filmesIniciais.length} filmes</p>
       <ListaFilmes filmes={visiveis} />
     </>
   );

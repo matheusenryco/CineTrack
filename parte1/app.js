@@ -26,9 +26,26 @@ const filmesIniciais = [
 function validarFilme(filme) {
     const erros = [];
     if (!filme.titulo) erros.push("Título obrigatório");
-    if (filme.ano < 1888 || filme.ano > 2030) erros.push("Ano inválido");
+    if (!Number.isInteger(filme.ano) || filme.ano < 1888 || filme.ano > 2030) {
+        erros.push("Ano inválido (entre 1888 e 2030)");
+    }
+    if (!filme.genero) erros.push("Gênero obrigatório");
+    if (!["assistido", "assistindo", "quero"].includes(filme.status)) {
+        erros.push("Status inválido");
+    }
+    if (!Number.isInteger(filme.nota) || filme.nota < 1 || filme.nota > 5) {
+        erros.push("Nota deve ser um número inteiro de 1 a 5");
+    }
     return { valido: erros.length === 0, erros };
 }
+
+// Imagem usada quando o filme não tem pôster (ou a URL não carrega)
+const POSTER_PADRAO = "data:image/svg+xml;utf8,"
+    + encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="450" viewBox="0 0 300 450">'
+        + '<rect width="300" height="450" fill="#9aa0a6"/>'
+        + '<text x="150" y="225" font-family="sans-serif" font-size="24" fill="#ffffff" '
+        + 'text-anchor="middle">Sem pôster</text></svg>');
 
 // Próximo id: o maior id existente mais 1 (o 0 cobre a lista vazia)
 const gerarId = (itens) => Math.max(0, ...itens.map((f) => f.id)) + 1;
@@ -46,7 +63,8 @@ function criarCard(filme) {
     card.dataset.id = filme.id;
 
     const poster = document.createElement("img");
-    if (filme.poster) poster.src = filme.poster;
+    poster.src = filme.poster || POSTER_PADRAO;
+    poster.addEventListener("error", () => { poster.src = POSTER_PADRAO; }, { once: true });
     poster.alt = `Poster de ${filme.titulo}`;
     poster.width = 300;
     poster.height = 450;
@@ -204,7 +222,12 @@ nav.addEventListener("click", (e) => {
 let editandoId = null;
 const modal = document.querySelector("#modal");
 const form = document.querySelector("#form-filme");
-const abrir = () => { modal.hidden = false; };
+const areaErros = document.querySelector("#erros-form");
+const mostrarErros = (erros) => {
+    areaErros.replaceChildren(...erros.map((msg) => criarElemento("p", "", msg)));
+    areaErros.hidden = erros.length === 0;
+};
+const abrir = () => { mostrarErros([]); modal.hidden = false; };
 const fechar = () => { modal.hidden = true; };
 
 document.querySelector("header button").addEventListener("click", () => {
@@ -238,10 +261,11 @@ form.addEventListener("submit", (e) => {
     dados.ano = Number(dados.ano); // vem string
     dados.nota = Number(dados.nota);
     dados.titulo = dados.titulo.trim(); // só espaços não vale
+    dados.genero = dados.genero.trim();
 
     const { valido, erros } = validarFilme(dados);
     if (!valido) {
-        alert(erros.join("\n"));
+        mostrarErros(erros);
         return;
     }
 

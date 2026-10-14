@@ -285,6 +285,22 @@ footer {
   resize: vertical;
 }
 
+#form-filme .erros {
+  padding: 8px 12px;
+  border: 1px solid #B3261E;
+  border-radius: var(--raio);
+  background: #FDECEA;
+  color: #8C1D18;
+}
+
+#form-filme .erros[hidden] {
+  display: none;
+}
+
+#form-filme .erros p {
+  margin: 0;
+}
+
 #form-filme .acoes {
   display: flex;
   justify-content: flex-end;

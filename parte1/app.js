@@ -34,16 +34,45 @@ function renderizarCards(lista) {
                 <p>Nota: ${estrelas(filme.nota)}</p>
                 <span class="badge ${filme.status}">${rotuloStatus(filme.status)}</span>
                 <div class="acoes">
-                    <button type="button">Editar</button>
-                    <button type="button">Remover</button>
+                    <button type="button" class="btn-editar">Editar</button>
+                    <button type="button" class="btn-remover">Remover</button>
                 </div>
             </article>`).join("");
 
     document.querySelector("#lista").innerHTML = html;
 }
 
-renderizarCards(filmesIniciais);
+// Lista de trabalho: filmesIniciais continua intacta, as ações trocam esta cópia
+let filmes = [...filmesIniciais];
+
+const lista = document.querySelector("#lista");
+const nav = document.querySelector("nav");
+
+renderizarCards(filmes);
 
 // Rodapé
 document.querySelector("footer small").textContent =
     `CineTrack © 2026 · ${filmesIniciais.length} filmes cadastrados`;
+
+// Remoção por delegação: um único listener cobre todos os botões Remover
+lista.addEventListener("click", (e) => {
+    const botao = e.target.closest(".btn-remover");
+    if (!botao) return; // clicou em outra coisa
+    if (!confirm("Remover este filme?")) return;
+    const card = botao.closest(".card");
+    const id = Number(card.dataset.id);
+    filmes = filmes.filter((f) => f.id !== id);
+    renderizarCards(filmes);
+});
+
+// Filtro por status por delegação
+nav.addEventListener("click", (e) => {
+    const botao = e.target.closest("button");
+    if (!botao) return;
+    nav.querySelector(".ativo")
+        .classList.remove("ativo");
+    botao.classList.add("ativo");
+    const status = botao.dataset.status;
+    renderizarCards(filmes.filter((f) =>
+        status === "todos" || f.status === status));
+});

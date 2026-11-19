@@ -6,12 +6,30 @@ import Filtros from "./components/Filtros.jsx";
 import ListaFilmes from "./components/ListaFilmes.jsx";
 import ModalFilme from "./components/ModalFilme.jsx";
 
+const CHAVE_FILTROS = "cinetrack:filtros";
+const FILTROS_PADRAO = { busca: "", status: "todos" };
+
+function lerFiltros() {
+  try {
+    const filtros = JSON.parse(localStorage.getItem(CHAVE_FILTROS));
+    return {
+      busca: typeof filtros?.busca === "string" ? filtros.busca : FILTROS_PADRAO.busca,
+      status: ["assistido", "assistindo", "quero"].includes(filtros?.status)
+        ? filtros.status
+        : FILTROS_PADRAO.status,
+    };
+  } catch {
+    return FILTROS_PADRAO;
+  }
+}
+
 export default function App() {
   const [filmes, setFilmes] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(null);
-  const [status, setStatus] = useState("todos");
-  const [busca, setBusca] = useState("");
+  const [inicial] = useState(lerFiltros);
+  const [status, setStatus] = useState(() => inicial.status);
+  const [busca, setBusca] = useState(() => inicial.busca);
   // null: fechado; {}: novo; com id: edição
   const [editando, setEditando] = useState(null);
 
@@ -25,6 +43,12 @@ export default function App() {
   useEffect(() => {
     document.title = `CineTrack (${filmes.length})`;
   }, [filmes.length]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(CHAVE_FILTROS, JSON.stringify({ busca, status }));
+    } catch {}
+  }, [busca, status]);
 
   function adicionar(novoFilme) {
     setFilmes((anteriores) => [

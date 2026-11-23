@@ -56,6 +56,45 @@ Na primeira visita a lista começa com 6 filmes de exemplo. Para voltar a esse e
 ### Limitações conhecidas
 
 - Os dados ficam só no navegador (`localStorage`): não há conta nem sincronização entre dispositivos.
-  A API e o armazenamento no servidor chegam na Parte 2.
+  A API e o armazenamento no servidor chegam na Parte 2 (abaixo).
 - A chave da TMDB, por ser uma aplicação só de frontend, fica visível no navegador. Na Parte 2 a chamada
   passa por um proxy no backend.
+
+## Parte 2 (v2.0)
+
+Aplicação full stack: frontend React (Vite) em `frontend/` consumindo uma API REST em Node.js/Express em
+`backend/`. Os filmes ficam em `backend/data/filmes.json`. A pasta `parte1/` permanece como na tag v1.0.
+
+### Como rodar o backend
+
+```bash
+cd backend
+npm install
+cp .env.example .env   # define a PORT (padrão 3000)
+npm run seed           # grava os 6 filmes iniciais em data/filmes.json
+npm run dev            # ou npm start
+```
+
+A API sobe em `http://localhost:3000`:
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| GET | `/filmes` | Lista os filmes; aceita `?status=` e `?q=` |
+| GET | `/filmes/:id` | Um filme, ou 404 |
+| POST | `/filmes` | Cria (400 sem `titulo` ou `ano`; 201 com o filme criado) |
+| PUT | `/filmes/:id` | Atualiza e preserva o `id` (404 se não existe) |
+| DELETE | `/filmes/:id` | Remove (204; 404 se não existe) |
+| GET | `/stats` | Total, contagem por status e média das notas |
+
+### Como rodar o frontend
+
+Com o backend rodando:
+
+```bash
+cd frontend
+npm install
+npm run dev     # desenvolvimento, em http://localhost:5173
+npm run build   # build de produção em frontend/dist
+```
+
+O módulo `frontend/src/api.js` concentra as chamadas `fetch` (URL base `http://localhost:3000`).

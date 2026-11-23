@@ -1,0 +1,19 @@
+// seed.js: popula data/filmes.json com os 6 filmes iniciais do CineTrack
+const fs = require("fs");
+const path = require("path");
+
+const ARQUIVO = path.join(__dirname, "data", "filmes.json");
+
+const filmes = [
+  { id: 1, titulo: "A Origem", ano: 2010, genero: "Ficção científica", nota: 5, status: "assistido", comentario: "Um sonho dentro de outro sonho.", poster: "img/a-origem.jpg" },
+  { id: 2, titulo: "Parasita", ano: 2019, genero: "Suspense", nota: 4, status: "assistido", comentario: "Crítica social afiada e cheia de reviravoltas.", poster: "img/parasite.jpg" },
+  { id: 3, titulo: "O Auto da Compadecida", ano: 2000, genero: "Comédia", nota: 5, status: "assistido", comentario: "Clássico do humor brasileiro.", poster: "img/a-dogs-will.jpg" },
+  { id: 4, titulo: "Duna: Parte Dois", ano: 2024, genero: "Ficção científica", nota: 4, status: "assistindo", comentario: "Visual impressionante, vendo aos poucos.", poster: "img/dune-part-two.jpg" },
+  { id: 5, titulo: "Interestelar", ano: 2014, genero: "Ficção científica", nota: 5, status: "quero", comentario: "Dizem que a trilha sonora é incrível.", poster: "img/interstelar.jpg" },
+  { id: 6, titulo: "Cidade de Deus", ano: 2002, genero: "Drama", nota: 4, status: "quero", comentario: "Está na lista há muito tempo.", poster: "img/city-of-god.jpg" },
+];
+
+fs.mkdirSync(path.dirname(ARQUIVO), { recursive: true });
+fs.writeFileSync(ARQUIVO, JSON.stringify(filmes, null, 2));
+
+console.log(`${filmes.length} filmes gravados`);

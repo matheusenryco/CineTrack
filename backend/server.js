@@ -22,7 +22,23 @@ app.get("/filmes", (req, res) => {
   let lista = lerFilmes();
   if (req.query.status)
     lista = lista.filter(f => f.status === req.query.status);
+  if (req.query.q) {
+    const q = req.query.q.toLowerCase();
+    lista = lista.filter(f => f.titulo.toLowerCase().includes(q));
+  }
   res.json(lista);
+});
+
+app.get("/stats", (req, res) => {
+  const lista = lerFilmes();
+  const porStatus = lista.reduce((acc, f) => {
+    acc[f.status] = (acc[f.status] || 0) + 1;
+    return acc;
+  }, {});
+  const notas = lista.filter(f => f.nota);
+  const soma = notas.reduce((acc, f) => acc + f.nota, 0);
+  const mediaNotas = notas.length ? Number((soma / notas.length).toFixed(1)) : 0;
+  res.json({ total: lista.length, porStatus, mediaNotas });
 });
 
 app.get("/filmes/:id", (req, res) => {

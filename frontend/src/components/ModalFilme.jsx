@@ -15,6 +15,7 @@ export default function ModalFilme({ filme, aoSalvar, aoFechar }) {
     ...VAZIO,
     ...filme,
   });
+  const [erros, setErros] = useState([]);
 
   function atualizar(campo, valor) {
     setDados((anteriores) => ({
@@ -23,13 +24,17 @@ export default function ModalFilme({ filme, aoSalvar, aoFechar }) {
     }));
   }
 
-  function submeter(evento) {
+  async function submeter(evento) {
     evento.preventDefault();
-    aoSalvar({
-      ...dados,
-      ano: Number(dados.ano),
-      nota: Number(dados.nota),
-    });
+    try {
+      await aoSalvar({
+        ...dados,
+        ano: Number(dados.ano),
+        nota: Number(dados.nota),
+      });
+    } catch (e) {
+      setErros(e.erros ?? [e.message]);
+    }
   }
 
   return (
@@ -118,6 +123,15 @@ export default function ModalFilme({ filme, aoSalvar, aoFechar }) {
               onChange={(e) => atualizar("comentario", e.target.value)}
             />
           </div>
+
+          {erros.length > 0 && (
+            <div className="erros" role="alert">
+              <p>Não foi possível salvar:</p>
+              <ul>
+                {erros.map((msg) => <li key={msg}>{msg}</li>)}
+              </ul>
+            </div>
+          )}
 
           <div className="acoes">
             <button type="button" onClick={aoFechar}>Cancelar</button>

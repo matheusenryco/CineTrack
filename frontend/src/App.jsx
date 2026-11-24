@@ -49,19 +49,16 @@ export default function App() {
     } catch {}
   }, [busca, status]);
 
+  // Erros sobem para o ModalFilme, que os mostra sem fechar
   async function salvar(filme) {
-    try {
-      if (filme.id) {
-        const at = await atualizar(filme.id, filme);
-        setFilmes((fs) => fs.map((f) => (f.id === at.id ? at : f)));
-      } else {
-        const novo = await criar(filme);
-        setFilmes((fs) => [...fs, novo]);
-      }
-      setEditando(null);
-    } catch (e) {
-      alert(`Não foi possível salvar: ${e.message}`);
+    if (filme.id) {
+      const at = await atualizar(filme.id, filme);
+      setFilmes((fs) => fs.map((f) => (f.id === at.id ? at : f)));
+    } else {
+      const novo = await criar(filme);
+      setFilmes((fs) => [...fs, novo]);
     }
+    setEditando(null);
   }
 
   async function removerFilme(id) {

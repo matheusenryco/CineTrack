@@ -2,11 +2,22 @@
 const BASE = "http://localhost:3000";
 
 async function pedir(caminho, opcoes = {}) {
-  const r = await fetch(BASE + caminho, {
-    headers: { "Content-Type": "application/json" },
-    ...opcoes,
-  });
-  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  let r;
+  try {
+    r = await fetch(BASE + caminho, {
+      headers: { "Content-Type": "application/json" },
+      ...opcoes,
+    });
+  } catch {
+    throw new Error("Não foi possível conectar à API. O backend está rodando?");
+  }
+  if (!r.ok) {
+    // 400 traz { erros: [...] }; 404 traz { erro: "..." }
+    const corpo = await r.json().catch(() => ({}));
+    const erro = new Error(corpo.erro ?? `HTTP ${r.status}`);
+    erro.erros = corpo.erros;
+    throw erro;
+  }
   return r.status === 204 ? null : r.json();
 }
 

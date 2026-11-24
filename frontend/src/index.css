@@ -360,6 +360,20 @@ body > h1 {
   box-shadow: none;
 }
 
+.modal-conteudo .erros {
+  margin-bottom: var(--espaco);
+  padding: 8px 12px;
+  border: 1px solid #B3261E;
+  border-radius: var(--raio);
+  background: #FDECEA;
+  color: #8C1D18;
+}
+
+.modal-conteudo .erros ul {
+  margin: 4px 0 0;
+  padding-left: 20px;
+}
+
 @keyframes aparecer {
   from {
     opacity: 0;

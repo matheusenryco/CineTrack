@@ -20,6 +20,22 @@ function salvarFilmes(lista) {
   fs.writeFileSync(ARQUIVO, JSON.stringify(lista, null, 2));
 }
 
+const STATUS = ["assistido", "assistindo", "quero"];
+
+// Portada do validarFilme da Parte 1: junta todos os problemas em vez de parar no primeiro
+function validarFilme(filme) {
+  const erros = [];
+  if (typeof filme.titulo !== "string" || !filme.titulo.trim())
+    erros.push("titulo é obrigatório");
+  if (!Number.isInteger(filme.ano) || filme.ano < 1888 || filme.ano > 2030)
+    erros.push("ano deve estar entre 1888 e 2030");
+  if (!Number.isInteger(filme.nota) || filme.nota < 1 || filme.nota > 5)
+    erros.push("nota deve estar entre 1 e 5");
+  if (!STATUS.includes(filme.status))
+    erros.push("status deve ser assistido, assistindo ou quero");
+  return erros;
+}
+
 app.get("/", (req, res) => {
   res.json({ ola: "CineTrack" });
 });
@@ -56,10 +72,9 @@ app.get("/filmes/:id", (req, res) => {
 });
 
 app.post("/filmes", (req, res) => {
-  const { titulo, ano } = req.body;
-  if (!titulo || !ano)
-    return res.status(400)
-      .json({ erro: "titulo e ano são obrigatórios" });
+  // sem Content-Type JSON o Express 5 deixa req.body undefined
+  const erros = validarFilme(req.body ?? {});
+  if (erros.length) return res.status(400).json({ erros });
   const lista = lerFilmes();
   const id = lista.reduce((m, f) => Math.max(m, f.id), 0) + 1;
   const novo = { ...req.body, id };
@@ -70,6 +85,8 @@ app.post("/filmes", (req, res) => {
 
 app.put("/filmes/:id", (req, res) => {
   const id = Number(req.params.id);
+  const erros = validarFilme(req.body ?? {});
+  if (erros.length) return res.status(400).json({ erros });
   const lista = lerFilmes();
   const i = lista.findIndex(f => f.id === id);
   if (i === -1) return res.status(404)
